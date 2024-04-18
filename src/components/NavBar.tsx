@@ -4,6 +4,7 @@ import { Content } from "@prismicio/client";
 import WordMark from "./WordMark";
 import Link from "next/link";
 import { PrismicNextLink } from "@prismicio/next";
+import ButtonLink from "./ButtonLink";
 
 type NavBarProps = {
     settings: Content.SettingsDocument
@@ -18,7 +19,17 @@ export default function NavBar({settings}: NavBarProps) {
               <span className="sr-only">Portfolio Home Page</span>
           </Link>
               <ul className="flex gap-6">
-                  {settings.data.navigation.map((item) => (
+                  {settings.data.navigation.map((item) => {
+                      if (item.cta_button) {
+                          return (
+                              <li key={item.label}>    
+                              <ButtonLink key={item.label} field={item.link}>
+                                  {item.label}
+                              </ButtonLink>
+                              </li>
+                          )
+                      }
+                    return (
                       <li key={item.label}>
                           <PrismicNextLink
                               field={item.link}
@@ -27,7 +38,7 @@ export default function NavBar({settings}: NavBarProps) {
                               {item.label}
                           </PrismicNextLink>
                       </li>
-                  ))}
+                  )})}
               </ul>
             </div>
           </nav>
